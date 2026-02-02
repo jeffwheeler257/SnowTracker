@@ -1,0 +1,14 @@
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\bin\Debug\net10.0\SnowTracker.exe
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\bin\Debug\net10.0\SnowTracker.deps.json
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\bin\Debug\net10.0\SnowTracker.runtimeconfig.json
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\bin\Debug\net10.0\SnowTracker.dll
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\bin\Debug\net10.0\SnowTracker.pdb
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\SnowTracker.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\SnowTracker.AssemblyInfoInputs.cache
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\SnowTracker.AssemblyInfo.cs
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\SnowTracker.csproj.CoreCompileInputs.cache
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\SnowTracker.dll
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\refint\SnowTracker.dll
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\SnowTracker.pdb
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\SnowTracker.genruntimeconfig.cache
+C:\Users\Karolina\Desktop\software-projects\SnowTracker\obj\Debug\net10.0\ref\SnowTracker.dll
