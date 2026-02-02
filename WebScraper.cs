@@ -10,7 +10,7 @@ namespace SnowTracker
 {
     public class WebScraper
     {
-        public string CreatePageSource(string url)
+        public static string CreatePageSource(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
                 throw new ArgumentException("URL cannot be null or empty", nameof(url));
@@ -27,7 +27,7 @@ namespace SnowTracker
             return driver.PageSource;
         }
 
-        private ChromeDriver InitializeDriver()
+        private static ChromeDriver InitializeDriver()
         {
             ChromeOptions options = new ChromeOptions();
             options.AddArguments(

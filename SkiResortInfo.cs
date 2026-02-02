@@ -8,11 +8,6 @@ namespace SnowTracker
 {
     public class SkiResortInfo
     {
-        private List<string> skiResorts = new List<string>
-        {
-            "Lake-Louise",
-            "Sunshine"
-        };
         
         public static void GetNewSnowfall(string resort)
         {
