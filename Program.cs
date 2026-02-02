@@ -18,7 +18,7 @@ namespace SnowTracker
             foreach(string resort in skiResorts)
             {
                 Console.WriteLine(resort);
-                SkiResortInfo.GetNewSnowfall(resort);
+                Console.WriteLine("Snowfall: " + SkiResortInfo.GetNewSnowfall(resort));
             }
         }
     }

@@ -9,7 +9,7 @@ namespace SnowTracker
     public class SkiResortInfo
     {
         
-        public static void GetNewSnowfall(string resort)
+        public static string GetNewSnowfall(string resort)
         {
             HtmlDocument htmlDoc = LoadHtml(resort);
             var newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
@@ -17,13 +17,12 @@ namespace SnowTracker
             );
 
             if (newSnowfallElement == null)
-            {
-                Console.WriteLine("Snowfall element NOT found.");
-                return;
+            {                
+                return "Snowfall not found.";
             }
 
             string newSnowfall = newSnowfallElement.InnerText.Trim();
-            Console.WriteLine("New Snowfall: " + newSnowfall);
+            return newSnowfall;
         }
 
         private static HtmlDocument LoadHtml(string resort)
