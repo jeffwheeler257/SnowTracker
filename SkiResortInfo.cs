@@ -26,37 +26,34 @@ namespace SnowTracker
             string newSnowfall = newSnowfallElement.InnerText.Trim();
             return newSnowfall;
         }
-        public static int[] getSnowForecast(string resort)
+        public static int[] GetSnowForecast(string resort)
         {
             int[] dailySnowForecast = new int[6];
             HtmlDocument htmlDoc = LoadHtml(resort);
-            var snowfallRow = htmlDoc.DocumentNode.SelectNodes(
-                "//tr[@class='forecast-table-row' and @data-row='snow']/td"
+            HtmlNodeCollection snowfallRow = htmlDoc.DocumentNode.SelectNodes(
+                // "//tr[@class='forecast-table-row' and @data-row='snow']/td"
+                "//tr[@data-row='snow']/td"
             );
-
+            
             if (snowfallRow == null)
-            {                
+            {          
+                Console.WriteLine("Empty Node Collection");      
                 return dailySnowForecast;
             }
 
             int[] incrementalSnowfall = new int[18];
             int index = 0;
-
-            // ISSUES RETRIEVING ACTUAL SNOW DATA IN HERE SOMEWHERE
-            foreach (var td in snowfallRow)
+            
+            foreach (HtmlNode td in snowfallRow)
             {
                 int value = 0;
-                var spanNodes = td.SelectNodes(".//span");
-                if (spanNodes != null && spanNodes.Count > 0)
+                HtmlNodeCollection spanNodes = td.SelectNodes(".//span");
+                if (spanNodes.Count == 2)
                 {
-                    var firstSpanText = spanNodes[0].InnerText.Trim();
-
-                    if (!string.IsNullOrEmpty(firstSpanText) && firstSpanText != "—")
-                    {
-                        if (!int.TryParse(firstSpanText, out value))
-                            value = 0;
-                    }
+                    string firstSpanText = spanNodes[0].InnerText.Trim();
+                    value = int.Parse(firstSpanText);
                 }
+                incrementalSnowfall[index] = value;
                 index++;
             }
 
