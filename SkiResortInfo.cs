@@ -15,22 +15,24 @@ namespace SnowTracker
         public int[] SnowForecast  { get; set; }
         public int TopSnowDepth  { get; set; }
         public int BottomSnowDepth  { get; set; }
-        // public string ForecastOverview  { get; set; }
+        public string ForecastOverview  { get; set; }
 
         public SkiResortInfo(string resort)
         {
             ResortName = resort;
 
             HtmlDocument htmlDoc = LoadHtml(resort);
-            NewSnowfall = GetNewSnowfall(resort, htmlDoc);
-            SnowForecast = GetSnowForecast(resort, htmlDoc);
+            NewSnowfall = GetNewSnowfall(htmlDoc);
+            SnowForecast = GetSnowForecast(htmlDoc);
 
-            int[] snowDepths = getSnowDepths(resort, htmlDoc);
+            int[] snowDepths = getSnowDepths(htmlDoc);
             TopSnowDepth = snowDepths[0];
             BottomSnowDepth = snowDepths[1];
+
+            ForecastOverview = GetForecastOverview(htmlDoc);
         }
 
-        public string GetNewSnowfall(string resort, HtmlDocument htmlDoc)
+        public string GetNewSnowfall(HtmlDocument htmlDoc)
         {
             HtmlNode newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
                 "//div[contains(@class,'about-weather-summary__snow-information-value')]/span[not(@class)]"
@@ -44,7 +46,7 @@ namespace SnowTracker
             string newSnowfall = newSnowfallElement.InnerText.Trim();
             return newSnowfall;
         }
-        public int[] GetSnowForecast(string resort, HtmlDocument htmlDoc)
+        public int[] GetSnowForecast(HtmlDocument htmlDoc)
         {
             int[] dailySnowForecast = new int[6];
             HtmlNodeCollection snowfallRow = htmlDoc.DocumentNode.SelectNodes(
@@ -83,7 +85,7 @@ namespace SnowTracker
         }
 
         // returns a list of the snow depths. Index 0 = Top, Index 1 = Bottom
-        public int[] getSnowDepths(string resort, HtmlDocument htmlDoc)
+        public int[] getSnowDepths(HtmlDocument htmlDoc)
         {
             HtmlNodeCollection snowDepthNodes = htmlDoc.DocumentNode.SelectNodes(
                 "//span[@class='snowht']"
@@ -101,8 +103,21 @@ namespace SnowTracker
 
             return snowDepths;
         }
-        // public int BottomSnowDepth  { get; set; }
-        // public string ForecastOverview  { get; set; }
+
+        public string GetForecastOverview(HtmlDocument htmlDoc)
+        {
+            HtmlNode overviewElement = htmlDoc.DocumentNode.SelectSingleNode(
+                "//span[@class='truncated']"
+            );
+
+            if (overviewElement == null)
+            {                
+                return "Overview not found.";
+            }
+
+            string overview = overviewElement.InnerText.Trim();
+            return overview;
+        }
 
         private static HtmlDocument LoadHtml(string resort)
         {
