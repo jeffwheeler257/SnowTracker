@@ -21,21 +21,20 @@ namespace SnowTracker
             {
                 SkiResortInfo resortInfo = new SkiResortInfo(resort);
                 resortList.Add(resortInfo);
-                Console.WriteLine(resortInfo.ResortName);
-                Console.WriteLine("Snowfall: " + resortInfo.NewSnowfall);
-                Console.WriteLine("Top depth: " + resortInfo.TopSnowDepth);
-                Console.WriteLine("Bottom depth: " + resortInfo.BottomSnowDepth);
-                Console.WriteLine("Weather Overview: " + resortInfo.ForecastOverview);
-                Console.WriteLine("Forecast raw data:");
-                int[] forecasts = resortInfo.SnowForecast;
-                foreach (int forecast in forecasts)
-                {
-                    Console.WriteLine(forecast + " cm");
-                }
-                
-                
+                // Console.WriteLine(resortInfo.ResortName);
+                // Console.WriteLine("Snowfall: " + resortInfo.NewSnowfall);
+                // Console.WriteLine("Top depth: " + resortInfo.TopSnowDepth);
+                // Console.WriteLine("Bottom depth: " + resortInfo.BottomSnowDepth);
+                // Console.WriteLine("Weather Overview: " + resortInfo.ForecastOverview);
+                // Console.WriteLine("Forecast raw data:");
+                // int[] forecasts = resortInfo.SnowForecast;
+                // foreach (int forecast in forecasts)
+                // {
+                //     Console.WriteLine(forecast + " cm");
+                // }
+
             }
-            Console.WriteLine(EmailService.GenerateEmailContent(resortList));
+            EmailService.SendEmail(resortList);
         }
     }
 }
