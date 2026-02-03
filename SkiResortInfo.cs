@@ -11,7 +11,7 @@ namespace SnowTracker
     public class SkiResortInfo
     {
         public string ResortName { get; set; }
-        public string NewSnowfall { get; set; }
+        public int NewSnowfall { get; set; }
         public int TopSnowDepth  { get; set; }
         public int BottomSnowDepth  { get; set; }
         public int[] SnowForecast  { get; set; }
@@ -32,7 +32,7 @@ namespace SnowTracker
             ForecastOverview = GetForecastOverview(htmlDoc);
         }
 
-        public string GetNewSnowfall(HtmlDocument htmlDoc)
+        public int GetNewSnowfall(HtmlDocument htmlDoc)
         {
             HtmlNode newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
                 "//div[contains(@class,'about-weather-summary__snow-information-value')]/span[not(@class)]"
@@ -40,10 +40,11 @@ namespace SnowTracker
 
             if (newSnowfallElement == null)
             {                
-                return "Snowfall not found.";
+                return -1;
             }
 
-            string newSnowfall = newSnowfallElement.InnerText.Trim();
+            string newSnowfallString = newSnowfallElement.InnerText.Trim().Replace("cm", "");
+            int newSnowfall = (int)double.Parse(newSnowfallString);
             return newSnowfall;
         }
         public int[] GetSnowForecast(HtmlDocument htmlDoc)
