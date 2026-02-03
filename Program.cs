@@ -12,16 +12,20 @@ namespace SnowTracker
         {
             List<string> skiResorts = new List<string>
             {
-                // "Lake-Louise",
-                // "Sunshine",
+                "Lake-Louise",
+                "Sunshine",
                 "Fernie"
             };
             foreach(string resort in skiResorts)
             {
-                Console.WriteLine(resort);
-                Console.WriteLine("Snowfall: " + SkiResortInfo.GetNewSnowfall(resort));
+                SkiResortInfo resortInfo = new SkiResortInfo(resort);
+                Console.WriteLine(resortInfo.ResortName);
+                Console.WriteLine("Snowfall: " + resortInfo.NewSnowfall);
+                Console.WriteLine("Top depth: " + resortInfo.TopSnowDepth);
+                Console.WriteLine("Bottom depth: " + resortInfo.BottomSnowDepth);
+                Console.WriteLine("Weather Overview: " + resortInfo.ForecastOverview);
                 Console.WriteLine("Forecast raw data:");
-                int[] forecasts = SkiResortInfo.GetSnowForecast(resort);
+                int[] forecasts = resortInfo.SnowForecast;
                 foreach (int forecast in forecasts)
                 {
                     Console.WriteLine(forecast + " cm");
