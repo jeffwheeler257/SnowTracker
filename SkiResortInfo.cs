@@ -12,9 +12,9 @@ namespace SnowTracker
     {
         public string ResortName { get; set; }
         public string NewSnowfall { get; set; }
-        public int[] SnowForecast  { get; set; }
         public int TopSnowDepth  { get; set; }
         public int BottomSnowDepth  { get; set; }
+        public int[] SnowForecast  { get; set; }
         public string ForecastOverview  { get; set; }
 
         public SkiResortInfo(string resort)
