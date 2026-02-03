@@ -16,9 +16,11 @@ namespace SnowTracker
                 "Sunshine",
                 "Fernie"
             };
+            List<SkiResortInfo> resortList = new List<SkiResortInfo>();
             foreach(string resort in skiResorts)
             {
                 SkiResortInfo resortInfo = new SkiResortInfo(resort);
+                resortList.Add(resortInfo);
                 Console.WriteLine(resortInfo.ResortName);
                 Console.WriteLine("Snowfall: " + resortInfo.NewSnowfall);
                 Console.WriteLine("Top depth: " + resortInfo.TopSnowDepth);
@@ -30,7 +32,10 @@ namespace SnowTracker
                 {
                     Console.WriteLine(forecast + " cm");
                 }
+                
+                
             }
+            Console.WriteLine(EmailService.GenerateEmailContent(resortList));
         }
     }
 }
