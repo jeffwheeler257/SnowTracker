@@ -10,10 +10,23 @@ namespace SnowTracker
 {
     public class SkiResortInfo
     {
-        
-        public static string GetNewSnowfall(string resort)
+        public string ResortName { get; set; }
+        public string NewSnowfall { get; set; }
+        public int[] SnowForecast  { get; set; }
+        // public int TopSnowDepth  { get; set; }
+        // public int BottomSnowDepth  { get; set; }
+        // public string ForecastOverview  { get; set; }
+
+        public SkiResortInfo(string resort)
         {
+            ResortName = resort;
             HtmlDocument htmlDoc = LoadHtml(resort);
+            NewSnowfall = GetNewSnowfall(resort, htmlDoc);
+            SnowForecast = GetSnowForecast(resort, htmlDoc);
+        }
+
+        public static string GetNewSnowfall(string resort, HtmlDocument htmlDoc)
+        {
             var newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
                 "//div[contains(@class,'about-weather-summary__snow-information-value')]/span[not(@class)]"
             );
@@ -26,10 +39,9 @@ namespace SnowTracker
             string newSnowfall = newSnowfallElement.InnerText.Trim();
             return newSnowfall;
         }
-        public static int[] GetSnowForecast(string resort)
+        public static int[] GetSnowForecast(string resort, HtmlDocument htmlDoc)
         {
             int[] dailySnowForecast = new int[6];
-            HtmlDocument htmlDoc = LoadHtml(resort);
             HtmlNodeCollection snowfallRow = htmlDoc.DocumentNode.SelectNodes(
                 // "//tr[@class='forecast-table-row' and @data-row='snow']/td"
                 "//tr[@data-row='snow']/td"
