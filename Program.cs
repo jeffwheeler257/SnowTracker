@@ -14,7 +14,10 @@ namespace SnowTracker
             {
                 "Lake-Louise",
                 "Sunshine",
-                "Fernie"
+                "Fernie",
+                "Revelstoke",
+                "Panorama",
+                "Kicking-Horse"
             };
             List<SkiResortInfo> resortList = new List<SkiResortInfo>();
             foreach(string resort in skiResorts)
@@ -34,7 +37,7 @@ namespace SnowTracker
                 // }
 
             }
-            EmailService.SendEmail(resortList);
+            // EmailService.SendEmail(resortList);
         }
     }
 }
