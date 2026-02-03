@@ -13,21 +13,26 @@ namespace SnowTracker
         public string ResortName { get; set; }
         public string NewSnowfall { get; set; }
         public int[] SnowForecast  { get; set; }
-        // public int TopSnowDepth  { get; set; }
-        // public int BottomSnowDepth  { get; set; }
+        public int TopSnowDepth  { get; set; }
+        public int BottomSnowDepth  { get; set; }
         // public string ForecastOverview  { get; set; }
 
         public SkiResortInfo(string resort)
         {
             ResortName = resort;
+
             HtmlDocument htmlDoc = LoadHtml(resort);
             NewSnowfall = GetNewSnowfall(resort, htmlDoc);
             SnowForecast = GetSnowForecast(resort, htmlDoc);
+
+            int[] snowDepths = getSnowDepths(resort, htmlDoc);
+            TopSnowDepth = snowDepths[0];
+            BottomSnowDepth = snowDepths[1];
         }
 
-        public static string GetNewSnowfall(string resort, HtmlDocument htmlDoc)
+        public string GetNewSnowfall(string resort, HtmlDocument htmlDoc)
         {
-            var newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
+            HtmlNode newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
                 "//div[contains(@class,'about-weather-summary__snow-information-value')]/span[not(@class)]"
             );
 
@@ -39,7 +44,7 @@ namespace SnowTracker
             string newSnowfall = newSnowfallElement.InnerText.Trim();
             return newSnowfall;
         }
-        public static int[] GetSnowForecast(string resort, HtmlDocument htmlDoc)
+        public int[] GetSnowForecast(string resort, HtmlDocument htmlDoc)
         {
             int[] dailySnowForecast = new int[6];
             HtmlNodeCollection snowfallRow = htmlDoc.DocumentNode.SelectNodes(
@@ -77,12 +82,27 @@ namespace SnowTracker
             return dailySnowForecast;
         }
 
+        // returns a list of the snow depths. Index 0 = Top, Index 1 = Bottom
+        public int[] getSnowDepths(string resort, HtmlDocument htmlDoc)
+        {
+            HtmlNodeCollection snowDepthNodes = htmlDoc.DocumentNode.SelectNodes(
+                "//span[@class='snowht']"
+            );
 
-        /*
-        Methods to add:
-        Top & bottom snow depth
-        Temperature
-        */
+            if (snowDepthNodes == null)
+            {       
+                Console.WriteLine("Empty Node Collection");         
+                return [-1, -1, -1];
+            }
+
+            int[] snowDepths = new int[2];
+            snowDepths[0] = int.Parse(snowDepthNodes[0].InnerText.Trim());
+            snowDepths[1] = int.Parse(snowDepthNodes[1].InnerText.Trim());
+
+            return snowDepths;
+        }
+        // public int BottomSnowDepth  { get; set; }
+        // public string ForecastOverview  { get; set; }
 
         private static HtmlDocument LoadHtml(string resort)
         {
