@@ -21,10 +21,10 @@ namespace SnowTracker
                 Console.WriteLine(resort);
                 Console.WriteLine("Snowfall: " + SkiResortInfo.GetNewSnowfall(resort));
                 Console.WriteLine("Forecast raw data:");
-                int[] forecast = SkiResortInfo.getSnowForecast(resort);
-                foreach (int data in forecast)
+                int[] forecasts = SkiResortInfo.GetSnowForecast(resort);
+                foreach (int forecast in forecasts)
                 {
-                    Console.WriteLine(data + " cm");
+                    Console.WriteLine(forecast + " cm");
                 }
             }
         }

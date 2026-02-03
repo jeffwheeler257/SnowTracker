@@ -12,14 +12,14 @@ namespace SnowTracker
             "jeffwheeler257@gmail.com"
         };
 
-        public void SendDailyEmail()
-        {
+        // public void SendDailyEmail()
+        // {
             
-        }
+        // }
 
-        public string GenerateEmailContent()
-        {
+        // public string GenerateEmailContent()
+        // {
             
-        }
+        // }
     }
 }
