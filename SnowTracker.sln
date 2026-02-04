@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowTracker", "SnowTracker.csproj", "{86B47710-FF6E-8813-F33A-9F1B16B71604}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowTracker", "src/SnowTracker.csproj", "{86B47710-FF6E-8813-F33A-9F1B16B71604}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
