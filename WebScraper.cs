@@ -14,16 +14,22 @@ namespace SnowTracker
         {
             if (string.IsNullOrWhiteSpace(url))
                 throw new ArgumentException("URL cannot be null or empty", nameof(url));
+            
             using var driver = InitializeDriver();
             driver.Navigate().GoToUrl(url);
             
-            // Wait for browser to report that page load has completed or time out after 10 seconds.
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            wait.Until(pageIsLoaded => 
-                ((IJavaScriptExecutor) pageIsLoaded)
-                    .ExecuteScript("return document.readyState") is string state
-                    && state == "complete");
-
+            try {
+                // Wait for browser to report that page load has completed or time out after 10 seconds.
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                wait.Until(pageIsLoaded => 
+                    ((IJavaScriptExecutor) pageIsLoaded)
+                        .ExecuteScript("return document.readyState") is string state
+                        && state == "complete");
+            } catch (Exception e)
+            {
+                Logger.Log("Issue creating page source\n" + e.Message);
+                throw;
+            }
             return driver.PageSource;
         }
 

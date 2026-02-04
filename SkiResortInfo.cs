@@ -19,29 +19,30 @@ namespace SnowTracker
 
         public SkiResortInfo(string resort)
         {
-            ResortName = resort;
+            try {
+                ResortName = resort;
 
-            HtmlDocument htmlDoc = LoadHtml(resort);
-            NewSnowfall = GetNewSnowfall(htmlDoc);
-            SnowForecast = GetSnowForecast(htmlDoc);
+                HtmlDocument htmlDoc = LoadHtml(resort);
+                NewSnowfall = GetNewSnowfall(htmlDoc);
+                SnowForecast = GetSnowForecast(htmlDoc);
 
-            int[] snowDepths = getSnowDepths(htmlDoc);
-            TopSnowDepth = snowDepths[0];
-            BottomSnowDepth = snowDepths[1];
+                int[] snowDepths = getSnowDepths(htmlDoc);
+                TopSnowDepth = snowDepths[0];
+                BottomSnowDepth = snowDepths[1];
 
-            ForecastOverview = GetForecastOverview(htmlDoc);
+                ForecastOverview = GetForecastOverview(htmlDoc);
+            } catch (Exception e)
+            {
+                Logger.Log($"Issue creating resort info for {resort}\n" + e.Message);
+                throw;
+            }
         }
 
         public int GetNewSnowfall(HtmlDocument htmlDoc)
         {
             HtmlNode newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
                 "//div[contains(@class,'about-weather-summary__snow-information-value')]/span[not(@class)]"
-            );
-
-            if (newSnowfallElement == null)
-            {                
-                return -1;
-            }
+                ) ?? throw new ArgumentException("Empty New Snowfall Node.");
 
             string newSnowfallString = newSnowfallElement.InnerText.Trim().Replace("cm", "");
             int newSnowfall = (int)double.Parse(newSnowfallString);
@@ -51,15 +52,8 @@ namespace SnowTracker
         {
             int[] dailySnowForecast = new int[6];
             HtmlNodeCollection snowfallRow = htmlDoc.DocumentNode.SelectNodes(
-                // "//tr[@class='forecast-table-row' and @data-row='snow']/td"
                 "//tr[@data-row='snow']/td"
-            );
-            
-            if (snowfallRow == null)
-            {          
-                Console.WriteLine("Empty Node Collection");      
-                return dailySnowForecast;
-            }
+                ) ?? throw new ArgumentException("Empty Snow Forecast Node Collection");;
 
             int[] incrementalSnowfall = new int[18];
             int index = 0;
@@ -90,13 +84,7 @@ namespace SnowTracker
         {
             HtmlNodeCollection snowDepthNodes = htmlDoc.DocumentNode.SelectNodes(
                 "//span[@class='snowht']"
-            );
-
-            if (snowDepthNodes == null)
-            {       
-                Console.WriteLine("Empty Node Collection");         
-                return [-1, -1, -1];
-            }
+                ) ?? throw new ArgumentException("Empty Snow Depth Node Collection.");
 
             int[] snowDepths = new int[2];
             snowDepths[0] = int.Parse(snowDepthNodes[0].InnerText.Trim());
@@ -109,12 +97,7 @@ namespace SnowTracker
         {
             HtmlNode overviewElement = htmlDoc.DocumentNode.SelectSingleNode(
                 "//span[@class='truncated']"
-            );
-
-            if (overviewElement == null)
-            {                
-                return "Overview not found.";
-            }
+                ) ?? throw new ArgumentException("Empty Overview Node.");;
 
             string overview = overviewElement.InnerText.Trim();
             return overview;
@@ -122,11 +105,17 @@ namespace SnowTracker
 
         private static HtmlDocument LoadHtml(string resort)
         {
-            HtmlDocument htmlDoc = new HtmlDocument();
-            string url = "https://www.snow-forecast.com/resorts/" + resort + "/6day/mid";
-            string pageSource = WebScraper.CreatePageSource(url);
-            htmlDoc.LoadHtml(pageSource);
-            return htmlDoc;
+            try {
+                HtmlDocument htmlDoc = new HtmlDocument();
+                string url = "https://www.snow-forecast.com/resorts/" + resort + "/6day/mid";
+                string pageSource = WebScraper.CreatePageSource(url);
+                htmlDoc.LoadHtml(pageSource);
+                return htmlDoc;
+            } catch (Exception e)
+            {
+                Logger.Log("Issue loading html" + e.Message);
+                throw;
+            }
         }
     }
 }

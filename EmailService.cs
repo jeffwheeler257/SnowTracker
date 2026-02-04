@@ -16,54 +16,44 @@ namespace SnowTracker
     {
         public static void SendEmail(List<SkiResortInfo> resortInfoList)
         {
-            DotEnv.Load();
-            string? senderEmail = Environment.GetEnvironmentVariable("SENDER_EMAIL");
-            string? senderEmailPassword = Environment.GetEnvironmentVariable("SENDER_PASSWORD");
-            
-            if (senderEmail == null || senderEmailPassword == null)
-            {
-                Console.WriteLine("No sender email given");
-                return;
-            }
-
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
-            smtpClient.Port = 587;
-            smtpClient.Credentials = new NetworkCredential(senderEmail, senderEmailPassword);
-            smtpClient.EnableSsl = true;
-
-            MailMessage email = new MailMessage();
-            email.From = new MailAddress(senderEmail);
-            email.Subject = "Daily Snow Reports";
-            email.Body = GenerateEmailContent(resortInfoList);
-            email.IsBodyHtml = true;
-
-            string? distributionList = Environment.GetEnvironmentVariable("MAIL_DISTRIBUTION_LIST");
-
-            if (distributionList == null)
-            {
-                Console.WriteLine("No email distribution list");
-                return;
-            }
-
-            string[] recipients = distributionList.Split(
-                ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
-            );
-
-            foreach (string recipient in recipients)
-            {
-                email.Bcc.Add(recipient);
-            }
-
             try
             {
+                DotEnv.Load();
+                string senderEmail = Environment.GetEnvironmentVariable("SENDER_EMAIL") 
+                    ?? throw new ArgumentException("No sender email given.");
+                string senderEmailPassword = Environment.GetEnvironmentVariable("SENDER_PASSWORD") 
+                    ?? throw new ArgumentException("No sender app password given.");
+
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new NetworkCredential(senderEmail, senderEmailPassword);
+                smtpClient.EnableSsl = true;
+
+                MailMessage email = new MailMessage();
+                email.From = new MailAddress(senderEmail);
+                email.Subject = "Daily Snow Reports";
+                email.Body = GenerateEmailContent(resortInfoList);
+                email.IsBodyHtml = true;
+
+                string distributionList = Environment.GetEnvironmentVariable("MAIL_DISTRIBUTION_LIST") 
+                    ?? throw new ArgumentException("No email distribution list");
+                
+                string[] recipients = distributionList.Split(
+                    ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
+                );
+
+                foreach (string recipient in recipients)
+                {   
+                    email.Bcc.Add(recipient);
+                }
+
                 smtpClient.Send(email);
+                Logger.Log("Mail sent succesfully.");
             } catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return;
+                Logger.Log("Issue sending email " + e.Message);
+                throw;
             }
-
-            Console.WriteLine("Mail sent succesfully.");
 
         }
 
