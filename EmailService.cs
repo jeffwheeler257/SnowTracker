@@ -51,7 +51,7 @@ namespace SnowTracker
 
             foreach (string recipient in recipients)
             {
-                email.To.Add(recipient);
+                email.Bcc.Add(recipient);
             }
 
             try
@@ -102,12 +102,12 @@ namespace SnowTracker
                     {
                         foreach (int forecast in forecasts)
                         {
-                            sb.Append($"<td>{forecast}</td>");
+                            sb.Append($"""<td style="text-align: center;">{forecast}</td>""");
                         }
                         
                     }else
                     {
-                        sb.Append($"<td>{value}</td>");
+                        sb.Append($"""<td style="text-align: center;">{value}</td>""");
                     }
                     
                 }
