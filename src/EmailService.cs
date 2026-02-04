@@ -18,7 +18,14 @@ namespace SnowTracker
         {
             try
             {
-                DotEnv.Load();
+                // .exe path
+                string envPath = Path.Combine(AppContext.BaseDirectory, ".env");
+                if (!File.Exists(envPath))
+                {
+                    // Dev path
+                    envPath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+                }
+                DotEnv.Load(new DotEnvOptions(envFilePaths: [envPath]));
                 string senderEmail = Environment.GetEnvironmentVariable("SENDER_EMAIL") 
                     ?? throw new ArgumentException("No sender email given.");
                 string senderEmailPassword = Environment.GetEnvironmentVariable("SENDER_PASSWORD") 
