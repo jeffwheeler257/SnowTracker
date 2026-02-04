@@ -36,8 +36,9 @@ namespace SnowTracker
                 "--disable-extensions",
                 "--disable-infobars",
                 "--disable-notifications",
-                "--disable-popup-blocking"
-                // "--no-sandbox", should be implemented if running in Docker
+                "--disable-popup-blocking",
+                "--no-sandbox", // should be implemented if running in Docker
+                "--disable-dev-shm-usage" // should be implemented if running in Docker
             );
 
             return new ChromeDriver(options);
