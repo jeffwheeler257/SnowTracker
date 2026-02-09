@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using OpenQA.Selenium.DevTools.V142.Network;
+using OpenQA.Selenium.DevTools.V143.DOM;
 
 namespace SnowTracker
 {
@@ -23,12 +24,12 @@ namespace SnowTracker
                 ResortName = resort;
 
                 HtmlDocument htmlDoc = LoadHtml(resort);
-                NewSnowfall = GetNewSnowfall(htmlDoc);
                 SnowForecast = GetSnowForecast(htmlDoc);
 
                 int[] snowDepths = getSnowDepths(htmlDoc);
                 TopSnowDepth = snowDepths[0];
                 BottomSnowDepth = snowDepths[1];
+                NewSnowfall = snowDepths[2];
 
                 ForecastOverview = GetForecastOverview(htmlDoc);
             } catch (Exception e)
@@ -38,16 +39,6 @@ namespace SnowTracker
             }
         }
 
-        public int GetNewSnowfall(HtmlDocument htmlDoc)
-        {
-            HtmlNode newSnowfallElement = htmlDoc.DocumentNode.SelectSingleNode(
-                "//div[contains(@class,'about-weather-summary__snow-information-value')]/span[not(@class)]"
-                ) ?? throw new ArgumentException("Empty New Snowfall Node.");
-
-            string newSnowfallString = newSnowfallElement.InnerText.Trim().Replace("cm", "");
-            int newSnowfall = (int)double.Parse(newSnowfallString);
-            return newSnowfall;
-        }
         public int[] GetSnowForecast(HtmlDocument htmlDoc)
         {
             int[] dailySnowForecast = new int[6];
@@ -79,17 +70,19 @@ namespace SnowTracker
             return dailySnowForecast;
         }
 
-        // returns a list of the snow depths. Index 0 = Top, Index 1 = Bottom
+        // returns a list of the snow depths. Index 0 = Top, Index 1 = Bottom, Index 2 = New
         public int[] getSnowDepths(HtmlDocument htmlDoc)
         {
             HtmlNodeCollection snowDepthNodes = htmlDoc.DocumentNode.SelectNodes(
                 "//span[@class='snowht']"
                 ) ?? throw new ArgumentException("Empty Snow Depth Node Collection.");
-
-            int[] snowDepths = new int[2];
+            Console.WriteLine("Test1");
+            int[] snowDepths = new int[3];
             snowDepths[0] = int.Parse(snowDepthNodes[0].InnerText.Trim());
             snowDepths[1] = int.Parse(snowDepthNodes[1].InnerText.Trim());
-
+            if (snowDepthNodes.Count() == 3) // if there is no new snow, 3rd node class will not appear
+                snowDepths[2] = int.Parse(snowDepthNodes[2].InnerText.Trim());
+            Console.WriteLine("Test2");
             return snowDepths;
         }
 
