@@ -76,13 +76,11 @@ namespace SnowTracker
             HtmlNodeCollection snowDepthNodes = htmlDoc.DocumentNode.SelectNodes(
                 "//span[@class='snowht']"
                 ) ?? throw new ArgumentException("Empty Snow Depth Node Collection.");
-            Console.WriteLine("Test1");
             int[] snowDepths = new int[3];
             snowDepths[0] = int.Parse(snowDepthNodes[0].InnerText.Trim());
             snowDepths[1] = int.Parse(snowDepthNodes[1].InnerText.Trim());
             if (snowDepthNodes.Count() == 3) // if there is no new snow, 3rd node class will not appear
                 snowDepths[2] = int.Parse(snowDepthNodes[2].InnerText.Trim());
-            Console.WriteLine("Test2");
             return snowDepths;
         }
 
